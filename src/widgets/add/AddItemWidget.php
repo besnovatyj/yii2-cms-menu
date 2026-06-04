@@ -1,6 +1,5 @@
 <?php
 
-
 /*
  * Copyright (c) 2026 Besnovatyj. Licensed under the MIT License.
  */
@@ -9,7 +8,7 @@ declare(strict_types=1);
 
 namespace Besnovatyj\Menu\widgets\add;
 
-use backend\widgets\alert\AlertAsset;
+use Besnovatyj\Alert\AlertAsset;
 use Besnovatyj\Menu\forms\backend\MenuItemForm;
 use Besnovatyj\Menu\widgets\add\assets\Assets;
 use DomainException;
