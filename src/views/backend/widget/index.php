@@ -7,7 +7,6 @@
 
 use Besnovatyj\TreeManager\Manager\TreeDataSource;
 use Besnovatyj\TreeManager\Manager\TreeWidget;
-use Besnovatyj\Menu\forms\backend\MenuItemForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -48,10 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'toggleStatus' => Url::to(['/Menu/backend/widget/toggle-status']),
                     'checkIntegrity' => Url::to(['/Menu/backend/widget/check-integrity']),
                 ],
-//                'forms' => [
-//                    'createFormClass' => MenuItemForm::class,
-//                    'updateFormClass' => MenuItemForm::class,
-//                ],
                 'serverForms' => [
                     'enabled' => true,
                     'display' => 'modal',
