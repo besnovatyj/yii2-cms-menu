@@ -13,7 +13,8 @@
   "minimum-stability": "stable",
   "extra": {
     "moduleClass": "Besnovatyj\\Menu\\Module",
-    "moduleId": "Menu"
+    "moduleId": "Menu",
+    "bescms": { "kind": "module" }
   },
   "keywords": [
     "yii2",
