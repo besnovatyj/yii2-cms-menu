@@ -77,7 +77,6 @@ class AddItemWidget extends Widget
                 'csrfHeaders' => [
                     'X-CSRF-Token'           => Yii::$app->request->getCsrfToken(),
                     'X-Requested-With'       => 'XMLHttpRequest',
-                    'X-Requested-With-Fetch' => 'true',
                 ],
             ],
         ]);
