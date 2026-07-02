@@ -8,7 +8,7 @@
 namespace Besnovatyj\Actors\migrations;
 
 use Besnovatyj\Menu\migrations\m241012_180250_create_menu_table;
-use common\components\migration\BaseMigration;
+use Besnovatyj\Kernel\migration\BaseMigration;
 
 class m241022_195630_insert_menu_demo extends BaseMigration
 {
