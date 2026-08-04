@@ -31,6 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['/Menu/backend/menu/index'],
                 ['class' => 'btn btn-outline-secondary']
             ) ?>
+            <?= Html::a(
+                '<i class="bi bi-plus-circle"></i> Добавить из модулей',
+                ['/Menu/backend/target/index'],
+                ['class' => 'btn btn-outline-secondary']
+            ) ?>
         </div>
     </div>
 
