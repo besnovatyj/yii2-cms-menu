@@ -25,4 +25,24 @@ return [
             ],
         ],
     ],
+    // Добавление пункта меню из целей, объявленных модулями (MenuTargetProvider)
+    [
+        'label' => 'Добавить из модулей',
+        'iconClass' => 'bi bi-plus-square me-1',
+        'url' => ['/Menu/backend/target/index'],
+        'active' => static function () {
+            return str_contains(Yii::$app->request->url, 'Menu/backend/target');
+        },
+        '_meta' => [
+            'placements' => [
+                [
+                    'location' => 'right-sidebar',
+                    'group' => 'Service',
+                    'groupIcon' => 'bi bi-sliders',
+                    'priority' => 110,
+                    'groupPriority' => 100,
+                ],
+            ],
+        ],
+    ],
 ];

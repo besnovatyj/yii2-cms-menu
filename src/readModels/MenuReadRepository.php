@@ -39,6 +39,23 @@ class MenuReadRepository
         return null;
     }
 
+    /**
+     * Плоский список всех узлов дерева для выпадающего списка родителя (id => имя с отступом по глубине).
+     * Без фильтра активности — родителем может быть и черновой узел.
+     *
+     * @return array<int,string>
+     */
+    public function selectOptions(): array
+    {
+        $options = [];
+        $nodes = Menu::find()->orderBy(['tree' => SORT_ASC, 'lft' => SORT_ASC])->all();
+        foreach ($nodes as $node) {
+            $indent = $node->depth > 0 ? str_repeat('— ', (int)$node->depth) : '';
+            $options[(int)$node->id] = $indent . $node->name;
+        }
+        return $options;
+    }
+
     private function getProvider(ActiveQuery $query): ActiveDataProvider
     {
         return new ActiveDataProvider([
