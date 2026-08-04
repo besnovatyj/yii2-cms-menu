@@ -17,8 +17,8 @@ return [
             'placements' => [
                 [
                     'location' => 'right-sidebar',
-                    'group' => 'Service',
-                    'groupIcon' => 'bi bi-sliders',
+                    'group' => 'Меню',
+                    'groupIcon' => 'bi bi-menu-button',
                     'priority' => 100,
                     'groupPriority' => 100,
                 ],
@@ -37,8 +37,8 @@ return [
             'placements' => [
                 [
                     'location' => 'right-sidebar',
-                    'group' => 'Service',
-                    'groupIcon' => 'bi bi-sliders',
+                    'group' => 'Меню',
+                    'groupIcon' => 'bi bi-menu-button',
                     'priority' => 110,
                     'groupPriority' => 100,
                 ],
