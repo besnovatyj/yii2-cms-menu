@@ -163,7 +163,7 @@ class FrontendNav extends Nav
             $label = '<span class="text">' . $label . '</span>' . ($nameAddon ?: '') . '
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" class="image-icon dropdown-icon">
 <title></title>
-<polyline points="112 184 256 328 400 184" style="fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"></polyline>
+<polyline points="112 184 256 328 400 184" style="fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:48px"></polyline>
 </svg>';
             $items = $this->isChildActive($items, $active);
             $dropdownHtml = $this->renderDropdown($items, $item);
