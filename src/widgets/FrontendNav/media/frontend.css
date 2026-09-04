@@ -3,46 +3,51 @@
  */
 
 /*
- * Только виджет-специфичные правила.
- * Раскладку и цвета пунктов (.navbar-nav / .nav-item / .nav-link)
- * задаёт тема через стандартный Bootstrap 5 — здесь их НЕ переопределяем.
+ * Только то, без чего меню НЕ РАБОТАЕТ.
+ *
+ * Раскладку, цвета, отступы и типографику пунктов (.navbar-nav / .nav-item /
+ * .nav-link / .dropdown-menu / .dropdown-item) задаёт Bootstrap и тема — здесь их
+ * НЕ переопределяем. Ни одного класса, придуманного темой, тут тоже нет.
+ *
+ * Единственная причина существования файла: Bootstrap 5 намеренно не поддерживает
+ * вложенные выпадающие меню («Multilevel dropdowns beyond Level 1 are not supported»),
+ * а дерево меню в CMS может быть любой глубины. Ниже — минимум, который делает
+ * третий и последующие уровни рабочими: позиционирование уровня и направление
+ * каретки. Раскрытием и закрытием занимается frontend.js, состояние — стандартный
+ * бутстраповский класс `.show` (правило `.dropdown-menu.show { display: block }`
+ * уже есть в Bootstrap, дублировать не нужно).
  */
 
-/* Виджет рисует собственный SVG-шеврон, поэтому родной каретик Bootstrap скрываем. */
-.dropdown-toggle.has-icon::after {
-    display: none;
-}
-
-.dropdown-icon {
-    width: 16px;
-    height: 16px;
-    margin-left: 5px;
-    vertical-align: middle;
-}
-
-/* Анимация раскрытия выпадающего меню. */
-.dropdown-menu.animate.fade-down {
-    animation: fadeDown 0.3s ease-in-out;
-}
-
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Вложенное подменю раскрывается вправо от родителя. */
 .dropdown-submenu {
     position: relative;
 }
 
-.dropdown-submenu .dropdown-menu {
+/*
+ * Вложенный уровень выезжает вправо от родителя и прижимается к его верхней кромке.
+ * `.dropdown-menu` у Bootstrap уже `position: absolute`, поэтому здесь только координаты.
+ *
+ * Ниже брейкпоинта раскрытия навбара Bootstrap переводит выпадашки в поток
+ * (`.navbar-nav .dropdown-menu { position: static }`), и top/left молча
+ * игнорируются: на узком экране уровни встают в общий столбец — как и нужно.
+ */
+.dropdown-submenu > .dropdown-menu {
     top: 0;
     left: 100%;
-    margin-left: 1px;
+    margin-top: -0.125rem;
+    margin-left: 0.125rem;
+}
+
+/*
+ * Каретка вложенного пункта смотрит вправо, а не вниз: уровень раскрывается вбок.
+ * Значения — бутстраповские, из `.dropend .dropdown-toggle::after`; `border-top`
+ * обязательно гасится, иначе к правой стрелке добавится нижняя.
+ */
+.dropdown-submenu > .dropdown-toggle::after {
+    float: right;
+    margin-top: 0.35em;
+    margin-left: 0.5em;
+    border-top: 0.3em solid transparent;
+    border-right: 0;
+    border-bottom: 0.3em solid transparent;
+    border-left: 0.3em solid;
 }
