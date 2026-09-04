@@ -37,9 +37,27 @@
      */
     function closeMenu(menu) {
         menu.classList.remove('show');
+        menu.classList.remove('dropdown-submenu-flip');
         var toggle = menu.previousElementSibling;
         if (toggle) {
             toggle.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    /**
+     * Уровень открыт — не вылез ли он за правый край окна. Если вылез, отражаем его
+     * влево от родителя (CSS-класс). Замер возможен только после открытия: у закрытого
+     * уровня `display: none`, и ширины у него нет.
+     *
+     * Ниже брейкпоинта раскрытия навбара уровни стоят в потоке и за край не выходят —
+     * проверка там просто ничего не находит.
+     *
+     * @param {Element} menu
+     */
+    function flipIfClipped(menu) {
+        var viewport = document.documentElement.clientWidth;
+        if (menu.getBoundingClientRect().right > viewport) {
+            menu.classList.add('dropdown-submenu-flip');
         }
     }
 
@@ -85,6 +103,7 @@
         if (!wasOpen) {
             menu.classList.add('show');
             toggle.setAttribute('aria-expanded', 'true');
+            flipIfClipped(menu);
         }
     }, true);
 
