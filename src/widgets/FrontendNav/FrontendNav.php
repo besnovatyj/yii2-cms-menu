@@ -118,6 +118,7 @@ class FrontendNav extends Nav
                 'encode' => $node->encode ?? true,
                 'url' => $node->url ?: '#',
                 'active_string' => $node->active_string,
+                'slug' => $node->slug,
                 'items' => [],
             ];
 
