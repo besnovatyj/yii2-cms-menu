@@ -78,7 +78,7 @@ class MenuItemForm extends Model implements TreeNodeFormInterface
             [['status', 'parentId', 'nodeId'], 'integer'],
             ['status', 'in', 'range' => [0, 1]],
             [['encode'], 'boolean'],
-            ['slug', SlugValidator::class],
+            ['slug', SlugValidator::class, 'allowLeadingDigit' => true],
             // TODO $root->slug + '#' + $this->slug (свой валидатор)
             [['slug'], 'unique', 'targetClass' => Menu::class, 'filter' => $this->_menu ? ['<>', 'id', $this->_menu->id] : null],
         ];
