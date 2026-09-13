@@ -9,17 +9,17 @@ declare(strict_types=1);
 namespace Besnovatyj\Menu\services;
 
 use Besnovatyj\Contracts\menu\MenuTargetProvider;
+use Besnovatyj\Kernel\module\ModuleFinder;
 use Besnovatyj\Kernel\urlmanager\UrlManagerHelperTrait;
 use Throwable;
-use Yii;
 
 /**
  * Находит модули, объявляющие цели для меню ({@see MenuTargetProvider}), и агрегирует их для админки.
  *
- * Discovery — через перебор зарегистрированных модулей приложения и проверку `instanceof` (та же
- * механика, что у {@see \Besnovatyj\RouteAlias\services\AliasTargetRegistry}). Работает только на
- * бэкенде (страница добавления пункта меню из модулей), не на горячем пути, поэтому инстанцирование
- * модулей здесь допустимо. Связанность нулевая: провайдеры не знают об этом модуле.
+ * Discovery — через перебор зарегистрированных модулей приложения по контракту ({@see ModuleFinder};
+ * та же механика, что у {@see \Besnovatyj\RouteAlias\services\AliasTargetRegistry}): инстанцируются
+ * только модули-провайдеры. Работает только на бэкенде (страница добавления пункта меню из модулей),
+ * не на горячем пути. Связанность нулевая: провайдеры не знают об этом модуле.
  *
  * Для каждого кандидата сразу строит готовый фронтовый URL через `frontendUrlManager` — так страница
  * получает всё необходимое одним массивом, а JS-каскад работает без обращений к серверу.
@@ -42,15 +42,7 @@ final class MenuTargetRegistry
             return $this->providers;
         }
 
-        $providers = [];
-        foreach (array_keys(Yii::$app->getModules()) as $id) {
-            $module = Yii::$app->getModule((string)$id);
-            if ($module instanceof MenuTargetProvider) {
-                $providers[(string)$id] = $module;
-            }
-        }
-
-        return $this->providers = $providers;
+        return $this->providers = ModuleFinder::implementing(MenuTargetProvider::class);
     }
 
     /**
