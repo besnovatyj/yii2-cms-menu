@@ -19,7 +19,7 @@ use yii\helpers\Json;
 ?>
 
 <button type="button"
-        class="btn btn-secondary"
+        class="btn btn-purple"
         data-bs-toggle="modal"
         data-bs-target="#<?= Html::encode($modalId) ?>">
     Добавить в меню
