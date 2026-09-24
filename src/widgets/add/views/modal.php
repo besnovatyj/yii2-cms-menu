@@ -49,6 +49,8 @@ use yii\helpers\Json;
                 <?= $form->field($model, 'encode')->checkbox() ?>
                 <?= $form->field($model, 'url')->textInput() ?>
                 <?= $form->field($model, 'active_string')->textInput() ?>
+                <?= $form->field($model, 'new_tab')->checkbox() ?>
+                <?= $form->field($model, 'css_class')->textInput() ?>
                 <?= $form->field($model, 'slug')->textInput() ?>
                 <?= $form->field($model, 'status')->dropDownList([1 => 'Вкл.', 0 => 'Выкл.']) ?>
                 <div class="d-grid gap-2">

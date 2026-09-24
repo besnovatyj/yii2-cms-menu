@@ -40,6 +40,8 @@ class MenuItemForm extends Model implements TreeNodeFormInterface
     public string $url = '';                // ссылка на которую ведёт пункт меню
     public string $slug = '';               // уникальный идентификатор пункта меню
     public string $active_string = '';      // Часть URL, при совпадении с которой пункт меню будет активен
+    public int $new_tab = 0;                // Открывать ссылку в новой вкладке (target="_blank")
+    public string $css_class = '';          // Дополнительные CSS-классы на элементе <li> пункта меню
     private ?Menu $_menu = null;
 
     public function __construct(?Menu $menu = null, ?int $parentId = null, $config = [])
@@ -55,6 +57,8 @@ class MenuItemForm extends Model implements TreeNodeFormInterface
             $this->slug = $menu->slug;
             $this->status = $menu->status;
             $this->active_string = $menu->active_string;
+            $this->new_tab = (int)$menu->new_tab;
+            $this->css_class = (string)$menu->css_class;
             $this->_menu = $menu;
         }
         parent::__construct($config);
@@ -74,10 +78,19 @@ class MenuItemForm extends Model implements TreeNodeFormInterface
     {
         return [
             [['name', 'status'], 'required'],
-            [['name', 'name_addon', 'slug', 'url', 'active_string'], 'string', 'max' => 255],
+            [['name', 'name_addon', 'slug', 'url', 'active_string', 'css_class'], 'string', 'max' => 255],
             [['status', 'parentId', 'nodeId'], 'integer'],
             ['status', 'in', 'range' => [0, 1]],
-            [['encode'], 'boolean'],
+            [['encode', 'new_tab'], 'boolean'],
+            // Класс попадает в разметку через Html::addCssClass(), то есть экранируется
+            // при рендере — XSS тут невозможен и валидатор нужен не для безопасности,
+            // а чтобы опечатка («class="promo"», «.promo») не превратилась в класс,
+            // которого нет ни в одной теме, и не искалась потом глазами в стилях.
+            // Фильтр раньше проверки: лишние пробелы — не ошибка ввода, их нормализуем молча,
+            // а ругаемся только на то, что классом быть не может.
+            ['css_class', 'filter', 'filter' => static fn(string $value): string => trim((string)preg_replace('/\s+/', ' ', $value))],
+            ['css_class', 'match', 'pattern' => '/^[A-Za-z0-9_\- ]+$/', 'skipOnEmpty' => true,
+                'message' => 'Допустимы только латинские буквы, цифры, дефис, подчёркивание и пробел между классами.'],
             ['slug', SlugValidator::class, 'allowLeadingDigit' => true],
             // TODO $root->slug + '#' + $this->slug (свой валидатор)
             [['slug'], 'unique', 'targetClass' => Menu::class, 'filter' => $this->_menu ? ['<>', 'id', $this->_menu->id] : null],
@@ -95,6 +108,23 @@ class MenuItemForm extends Model implements TreeNodeFormInterface
             'status' => 'Статус пункта меню',
             'slug' => 'Slug',
             'active_string' => 'Строка активности при совпадении',
+            'new_tab' => 'Открывать в новой вкладке',
+            'css_class' => 'CSS-классы пункта меню',
+        ];
+    }
+
+    /**
+     * Подсказки под полями.
+     *
+     * Только у новых полей: ActiveField подставляет hint автоматически из этого метода,
+     * поэтому перечислять здесь остальные атрибуты значило бы молча изменить вид уже
+     * привычных форм.
+     */
+    public function attributeHints(): array
+    {
+        return [
+            'new_tab' => 'Внешние ссылки (билеты, соцсети, сайты партнёров) удобно открывать отдельной вкладкой, чтобы посетитель не терял страницу сайта.',
+            'css_class' => 'Классы через пробел, без точки. Попадают на элемент &lt;li&gt; пункта — по ним тема оформляет отдельный пункт (например, кнопку «Билеты»).',
         ];
     }
 

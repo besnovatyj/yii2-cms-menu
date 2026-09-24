@@ -121,10 +121,17 @@ class FrontendDropdown extends Dropdown
 
             $url = $item['url'] ?? null;
 
+            // Оформление из админки — тем же способом, что на верхнем уровне
+            // (см. FrontendNav::renderItem): новая вкладка у ссылки, свои классы у `<li>`.
+            $linkOptions = ItemAttributes::applyToLink($item, $linkOptions);
+            $itemOptions = ItemAttributes::applyToContainer($item, $itemOptions);
+
             if (empty($item['items'])) {
                 if ($url === null) {
-                    // Пункт без адреса — заголовок группы, а не ссылка.
-                    $content = Html::tag('li', Html::tag('h6', $label, ['class' => 'dropdown-header']));
+                    // Пункт без адреса — заголовок группы, а не ссылка. `$itemOptions`
+                    // передаём и здесь: свои классы пункта из админки одинаково нужны
+                    // и заголовку группы, иначе на нём поле молча не работало бы.
+                    $content = Html::tag('li', Html::tag('h6', $label, ['class' => 'dropdown-header']), $itemOptions);
                 } else {
                     $content = Html::tag('li', Html::a($label, $url, $linkOptions), $itemOptions);
                 }

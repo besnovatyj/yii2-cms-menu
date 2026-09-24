@@ -30,6 +30,8 @@ return function (\yii\di\Container $container): void {
                     slug: $form->slug,
                     status: $form->status,
                     active_string: $form->active_string,
+                    new_tab: $form->new_tab,
+                    css_class: $form->css_class,
                 );
             },
             entityUpdater: function (Node $node, TreeNodeFormInterface $form): Node {
@@ -42,6 +44,8 @@ return function (\yii\di\Container $container): void {
                     status: $form->status,
                     slug: $form->slug,
                     active_string: $form->active_string,
+                    new_tab: $form->new_tab,
+                    css_class: $form->css_class,
                 );
                 return $node;
             },

@@ -49,7 +49,9 @@ use yii\base\InvalidConfigException;
  *  - активность считается ещё и по `active_string` пункта, а при пустом поле —
  *    по его же URL (так обещает подсказка в форме пункта), см. {@see isItemActive};
  *  - активность ПОДНИМАЕТСЯ до самого верха дерева с любой глубины, см. {@see isChildActive};
- *  - вложенные уровни рендерятся валидной разметкой списка, см. {@see FrontendDropdown}.
+ *  - вложенные уровни рендерятся валидной разметкой списка, см. {@see FrontendDropdown};
+ *  - оформление пункта, заданное в админке (новая вкладка, свои классы на `<li>`),
+ *    попадает в разметку на ЛЮБОМ уровне меню, см. {@see ItemAttributes}.
  *
  * КАК ПЕРЕОПРЕДЕЛИТЬ ПОД ТЕМУ. Тема наследует этот класс, переопределяет
  * {@see renderItem} (презентация верхнего уровня) и ОБЯЗАТЕЛЬНО указывает свой
@@ -119,6 +121,11 @@ class FrontendNav extends Nav
                 'url' => $node->url ?: '#',
                 'active_string' => $node->active_string,
                 'slug' => $node->slug,
+                // Оформление пункта, заданное в админке: новая вкладка и произвольные
+                // классы на `<li>`. В HTML их превращает {@see ItemAttributes} —
+                // одинаково на всех уровнях меню и во всех темах.
+                'new_tab' => (int)$node->new_tab,
+                'css_class' => (string)$node->css_class,
                 'items' => [],
             ];
 
@@ -265,6 +272,11 @@ class FrontendNav extends Nav
         if ($this->activateItems && $selfActive) {
             $linkOptions['aria-current'] = 'page';
         }
+
+        // Оформление из админки применяем последним: класс пункта не должен вытеснять
+        // несущие классы разметки, а `target` — зависеть от того, есть ли у пункта потомки.
+        $linkOptions = ItemAttributes::applyToLink($item, $linkOptions);
+        $options = ItemAttributes::applyToContainer($item, $options);
 
         return Html::tag('li', Html::a($label, $url, $linkOptions) . $items, $options);
     }

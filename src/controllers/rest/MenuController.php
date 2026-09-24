@@ -55,6 +55,8 @@ class MenuController extends Controller
             'encode' => $menuRest->encode,
             'url' => $menuRest->url,
             'active_string' => $menuRest->active_string,
+            'new_tab' => $menuRest->new_tab,
+            'css_class' => $menuRest->css_class,
             'status' => $menuRest->status,
             'slug' => $menuRest->slug,
             '_links' => [

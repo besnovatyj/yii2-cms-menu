@@ -23,6 +23,8 @@ use Besnovatyj\Menu\entities\queries\MenuQuery;
  * @property int $encode - Декодировать ли HTML сущности в названии пункта меню.
  * @property string $url - Ссылка на которую ведёт пункт меню.
  * @property string $active_string - Строка, при совпадении с которой пункт меню будет активен.
+ * @property int $new_tab - Открывать ссылку в новой вкладке (target="_blank").
+ * @property string $css_class - Дополнительные CSS-классы на элементе <li> пункта меню.
  * @property int $status - Статус активности пункта меню.
  * @property string $slug - Уникальный идентификатор пункта меню. У корней уникален.У листьев - $root->slug + '#' + $this->slug
  * @property int $sort_order - Порядок сортировки корневых узлов
@@ -35,6 +37,9 @@ class Menu extends Node
 
     /**
      * Factory method для создания пункта меню
+     *
+     * `$new_tab` и `$css_class` — необязательное оформление пункта, а не его суть,
+     * поэтому со значениями по умолчанию: пункт меню остаётся создаваемым и без них.
      */
     public static function create(
         string $name,
@@ -44,6 +49,8 @@ class Menu extends Node
         string $slug,
         int    $status,
         string $active_string,
+        int    $new_tab = 0,
+        string $css_class = '',
     ): self
     {
         $menu = new static();
@@ -54,6 +61,8 @@ class Menu extends Node
         $menu->slug = $slug;
         $menu->status = $status;
         $menu->active_string = $active_string;
+        $menu->new_tab = $new_tab;
+        $menu->css_class = $css_class;
         return $menu;
     }
 
@@ -68,6 +77,8 @@ class Menu extends Node
         int    $status,
         string $slug,
         string $active_string,
+        int    $new_tab = 0,
+        string $css_class = '',
     ): void
     {
         $this->name = $name;
@@ -77,6 +88,8 @@ class Menu extends Node
         $this->status = $status;
         $this->slug = $slug;
         $this->active_string = $active_string;
+        $this->new_tab = $new_tab;
+        $this->css_class = $css_class;
     }
 
     public static function tableName(): string

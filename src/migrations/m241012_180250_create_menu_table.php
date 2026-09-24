@@ -47,6 +47,10 @@ class m241012_180250_create_menu_table extends BaseMigration
                 ->comment('Ссылка на которую ведёт пункт меню.'),
             'active_string' => $this->string(255)->notNull()->defaultValue('')
                 ->comment('Строка, при совпадении с которой пункт меню будет активен.'),
+            'new_tab' => $this->smallInteger(1)->notNull()->defaultValue(0)
+                ->comment('Открывать ссылку в новой вкладке (target="_blank").'),
+            'css_class' => $this->string(255)->notNull()->defaultValue('')
+                ->comment('Дополнительные CSS-классы на элементе <li> пункта меню.'),
             'status' => $this->string(255)->notNull()->defaultValue(0)
                 ->comment('Статус активности пункта меню.'),
             'slug' => $this->string(255)->notNull()->unique()
